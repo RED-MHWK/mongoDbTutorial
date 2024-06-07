@@ -1,7 +1,16 @@
 {
-  "name": "mongoDbTutorial",
+  "name": "mongodbtutorial",
   "version": "1.0.0",
+  "type": "module",
+  "main": "databaseManipulation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    
+    "dotenv": "^16.4.5",
+    "mongoose": "^8.4.1"
   }
 }
