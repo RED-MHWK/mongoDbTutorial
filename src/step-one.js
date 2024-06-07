@@ -1,31 +1,11 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import { Book, Author } from './schemas/schema_uncontrolled.js';
 dotenv.config();
 
 //setting the connection url using the environment variables from .env file
 const mongoURL = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/${process.env.MONGO_DB_NAME}?authSource=admin`;
 
-
-
-//creating our test schemas which predefine the type of variables we'll insert later
-const bookSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    year: Number
-});
-
-const authorSchema = new mongoose.Schema({
-    name: String,
-    birthYear: Number,
-    nationality: String
-});
-
-
-
-//defining our models applying our schemas and give them a name
-const Book = mongoose.model('Book', bookSchema);
-const Author = mongoose.model('Author', authorSchema);
 
 async function importData() {
     try {
@@ -38,7 +18,7 @@ async function importData() {
             {
                 "title": "The Catcher in the Rye",
                 "author": "J.D. Salinger",
-                "year": 1951
+                "year": 1949
             },
             {
                 "title": "To Kill a Mockingbird",

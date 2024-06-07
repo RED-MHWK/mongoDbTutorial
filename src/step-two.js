@@ -1,28 +1,13 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import {Book, Author} from './schemas/schemas_controlled.js';
 
 dotenv.config();
 
 //setting the connection url using the environment variables from .env file
 const mongoURL = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/${process.env.MONGO_DB_NAME}?authSource=admin`;
 
-// Author Schema
-const authorSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    birthYear: Number,
-    nationality: String
-});
 
-const Author = mongoose.model('Author', authorSchema);
-
-// Book Schema with reference to Author
-const bookSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    author: { type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true },
-    year: Number
-});
-
-const Book = mongoose.model('Book', bookSchema);
 
 const newAuthors = [
     { name: "George Orwell", birthYear: 1903, nationality: "British" },
@@ -40,8 +25,8 @@ async function importData() {
             name: { $in: newAuthors.map(author => author.name) }
         });
 
-        if (existingAuthors.length) {
-            throw new Error('Authors already exist');
+        if (existingAuthors) {
+            throw new Error(`Authors already exist:  ${existingAuthors}`);
         }
 
         const authors = await Author.insertMany(newAuthors);
@@ -50,7 +35,7 @@ async function importData() {
             title: { $in: newBooks.map(book => book.title) }
         });
 
-        if (existingBooks.length) {
+        if (existingBooks) {
             throw new Error('Books already exist');
         }
 
