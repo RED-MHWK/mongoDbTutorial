@@ -3,10 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(`Username: ${process.env.MONGO_INITDB_ROOT_USERNAME}`);
-console.log(`Password: ${process.env.MONGO_INITDB_ROOT_PASSWORD}`);
-console.log(`Database: ${process.env.MONGO_DB_NAME}`);
-
 //setting the connection url using the environment variables from .env file
 const mongoURL = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/${process.env.MONGO_DB_NAME}?authSource=admin`;
 
