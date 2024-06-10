@@ -1,13 +1,11 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import {Book, Author} from './schemas/schemas_controlled.js';
+import { Book, Author } from './schemas/schemas_controlled.js';
 
 dotenv.config();
 
-//setting the connection url using the environment variables from .env file
+// Setting the connection URL using the environment variables from the .env file
 const mongoURL = `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/${process.env.MONGO_DB_NAME}?authSource=admin`;
-
-
 
 const newAuthors = [
     { name: "George Orwell", birthYear: 1903, nationality: "British" },
@@ -25,8 +23,8 @@ async function importData() {
             name: { $in: newAuthors.map(author => author.name) }
         });
 
-        if (existingAuthors) {
-            throw new Error(`Authors already exist:  ${existingAuthors}`);
+        if (existingAuthors.length > 0) {
+            throw new Error('Authors already exist');
         }
 
         const authors = await Author.insertMany(newAuthors);
@@ -35,7 +33,7 @@ async function importData() {
             title: { $in: newBooks.map(book => book.title) }
         });
 
-        if (existingBooks) {
+        if (existingBooks.length > 0) {
             throw new Error('Books already exist');
         }
 
@@ -70,7 +68,7 @@ async function fetchData() {
 
 (async function() {
     try {
-        await mongoose.connect(mongoURL);
+        await mongoose.connect(mongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log('Connected to MongoDB');
 
         await importData();
